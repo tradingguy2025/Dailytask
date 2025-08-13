@@ -89,7 +89,7 @@ export default function Home() {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
-                Task Dashboard
+                Taskflow
               </h1>
               <p className="text-slate-600 dark:text-slate-400 text-lg">
                 Manage your productivity with style

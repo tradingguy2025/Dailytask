@@ -11,7 +11,7 @@ interface TodoStatsProps {
 export const TodoStats = ({ total, completed, active }: TodoStatsProps) => {
   return (
     <div className="grid grid-cols-3 gap-4 mb-6">
-      <Card className="transition-all duration-300 hover:scale-105">
+      <Card className="neon-glow transition-all duration-300 hover:scale-105">
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium">Total</CardTitle>
         </CardHeader>
@@ -19,7 +19,7 @@ export const TodoStats = ({ total, completed, active }: TodoStatsProps) => {
           <div className="text-2xl font-bold transition-colors duration-200">{total}</div>
         </CardContent>
       </Card>
-      <Card className="transition-all duration-300 hover:scale-105">
+      <Card className="neon-glow transition-all duration-300 hover:scale-105">
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium">Active</CardTitle>
         </CardHeader>
@@ -27,7 +27,7 @@ export const TodoStats = ({ total, completed, active }: TodoStatsProps) => {
           <div className="text-2xl font-bold text-blue-600 transition-colors duration-200">{active}</div>
         </CardContent>
       </Card>
-      <Card className="transition-all duration-300 hover:scale-105">
+      <Card className="neon-glow transition-all duration-300 hover:scale-105">
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium">Completed</CardTitle>
         </CardHeader>

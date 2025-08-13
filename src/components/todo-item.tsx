@@ -43,7 +43,7 @@ export const TodoItem = ({
   return (
     <Card 
       className={cn(
-        "mb-2 transition-all duration-300 hover:scale-[1.02] hover:shadow-sm",
+        "neon-glow mb-2 transition-all duration-300 hover:scale-[1.02] hover:shadow-sm",
         completed && "opacity-75"
       )}
     >

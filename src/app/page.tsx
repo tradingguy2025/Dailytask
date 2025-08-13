@@ -97,7 +97,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="bg-card rounded-lg shadow-sm border p-6 transition-all duration-300 hover:shadow-md">
+        <div className="neon-glow rounded-lg p-6 transition-all duration-300 hover:shadow-md">
           <TodoForm onAdd={addTodo} />
           
           <TodoStats 

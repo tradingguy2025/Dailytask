@@ -1,0 +1,38 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+interface TodoFiltersProps {
+  currentFilter: "all" | "active" | "completed";
+  onFilterChange: (filter: "all" | "active" | "completed") => void;
+}
+
+export const TodoFilters = ({ currentFilter, onFilterChange }: TodoFiltersProps) => {
+  const filters = [
+    { key: "all", label: "All" },
+    { key: "active", label: "Active" },
+    { key: "completed", label: "Completed" },
+  ] as const;
+
+  return (
+    <div className="flex gap-2 mb-4">
+      {filters.map((filter) => (
+        <Button
+          key={filter.key}
+          variant="ghost"
+          size="sm"
+          onClick={() => onFilterChange(filter.key)}
+          className={cn(
+            "text-sm",
+            currentFilter === filter.key 
+              ? "bg-primary text-primary-foreground" 
+              : "hover:bg-gray-100"
+          )}
+        >
+          {filter.label}
+        </Button>
+      ))}
+    </div>
+  );
+};

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import { TodoForm } from "@/components/todo-form";
 import { TodoItem } from "@/components/todo-item";
@@ -20,6 +20,26 @@ export default function Home() {
     { id: "3", text: "Deploy to production", completed: true },
   ]);
   const [filter, setFilter] = useState<"all" | "active" | "completed">("all");
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    const isDarkMode = localStorage.getItem("darkMode") === "true";
+    setIsDark(isDarkMode);
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+    }
+  }, []);
+
+  const toggleDarkMode = () => {
+    const newDarkMode = !isDark;
+    setIsDark(newDarkMode);
+    localStorage.setItem("darkMode", newDarkMode.toString());
+    if (newDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  };
 
   const addTodo = (text: string) => {
     const newTodo: Todo = {
@@ -59,16 +79,25 @@ export default function Home() {
   const activeTodos = totalTodos - completedTodos;
 
   return (
-    <div className="min-h-screen bg-background p-4 sm:p-8">
+    <div className="min-h-screen bg-background p-4 sm:p-8 transition-colors duration-300">
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">Todo App</h1>
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-3xl font-bold mb-2">Todo App</h1>
+            <button
+              onClick={toggleDarkMode}
+              className="p-2 rounded-lg bg-card border hover:bg-accent transition-colors duration-200"
+              aria-label="Toggle dark mode"
+            >
+              {isDark ? "🌙" : "☀️"}
+            </button>
+          </div>
           <p className="text-muted-foreground">
             Organize your tasks efficiently
           </p>
         </div>
 
-        <div className="bg-card rounded-lg shadow-sm border p-6">
+        <div className="bg-card rounded-lg shadow-sm border p-6 transition-all duration-300 hover:shadow-md">
           <TodoForm onAdd={addTodo} />
           
           <TodoStats 

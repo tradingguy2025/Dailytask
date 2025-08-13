@@ -28,12 +28,17 @@ export const TodoForm = ({ onAdd }: TodoFormProps) => {
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Add a new todo..."
-          className="flex-1"
+          className="flex-1 transition-all duration-200 focus:ring-2 focus:ring-primary"
           onKeyDown={(e) => {
             if (e.key === "Enter") handleSubmit(e);
           }}
         />
-        <Button type="submit" size="sm" disabled={!text.trim()}>
+        <Button 
+          type="submit" 
+          size="sm" 
+          disabled={!text.trim()}
+          className="transition-all duration-200 hover:scale-105 disabled:opacity-50"
+        >
           <Plus className="w-4 h-4" />
         </Button>
       </div>

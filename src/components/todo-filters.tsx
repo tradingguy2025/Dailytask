@@ -24,10 +24,10 @@ export const TodoFilters = ({ currentFilter, onFilterChange }: TodoFiltersProps)
           size="sm"
           onClick={() => onFilterChange(filter.key)}
           className={cn(
-            "text-sm",
+            "text-sm transition-all duration-200 hover:scale-105",
             currentFilter === filter.key 
               ? "bg-primary text-primary-foreground" 
-              : "hover:bg-gray-100"
+              : "hover:bg-accent"
           )}
         >
           {filter.label}

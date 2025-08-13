@@ -41,17 +41,12 @@ export const TodoItem = ({
   };
 
   return (
-    <Card 
-      className={cn(
-        "neon-glow mb-2 transition-all duration-300 hover:scale-[1.02] hover:shadow-sm",
-        completed && "opacity-75"
-      )}
-    >
+    <Card className="mb-2 subtle-hover">
       <CardContent className="p-4 flex items-center gap-3">
         <Checkbox
           checked={completed}
           onCheckedChange={() => onToggle(id)}
-          className="w-5 h-5 transition-colors duration-200"
+          className="w-5 h-5"
         />
         
         {isEditing ? (
@@ -66,46 +61,22 @@ export const TodoItem = ({
                 if (e.key === "Escape") handleCancel();
               }}
             />
-            <Button 
-              size="sm" 
-              onClick={handleSave}
-              className="transition-all duration-200 hover:scale-105"
-            >
+            <Button size="sm" onClick={handleSave}>
               <Save className="w-4 h-4" />
             </Button>
-            <Button 
-              size="sm" 
-              variant="outline" 
-              onClick={handleCancel}
-              className="transition-all duration-200 hover:scale-105"
-            >
+            <Button size="sm" variant="outline" onClick={handleCancel}>
               <X className="w-4 h-4" />
             </Button>
           </div>
         ) : (
           <div className="flex-1 flex items-center gap-2">
-            <span 
-              className={cn(
-                "flex-1 transition-all duration-300",
-                completed ? "line-through text-gray-500" : ""
-              )}
-            >
+            <span className={`flex-1 ${completed ? "line-through text-muted-foreground" : ""}`}>
               {text}
             </span>
-            <Button 
-              size="sm" 
-              variant="ghost" 
-              onClick={() => setIsEditing(true)}
-              className="transition-all duration-200 hover:scale-105 hover:bg-accent"
-            >
+            <Button size="sm" variant="ghost" onClick={() => setIsEditing(true)}>
               <Edit2 className="w-4 h-4" />
             </Button>
-            <Button 
-              size="sm" 
-              variant="ghost" 
-              onClick={() => onDelete(id)}
-              className="transition-all duration-200 hover:scale-105 hover:bg-destructive hover:text-destructive-foreground"
-            >
+            <Button size="sm" variant="ghost" onClick={() => onDelete(id)}>
               <Trash2 className="w-4 h-4" />
             </Button>
           </div>

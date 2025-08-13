@@ -37,7 +37,7 @@ export const TodoForm = ({ onAdd }: TodoFormProps) => {
           type="submit" 
           size="sm" 
           disabled={!text.trim()}
-          className="finance-button transition-all duration-300 hover:scale-105 disabled:opacity-50"
+          className="finance-button satisfying-click transition-all duration-300 hover:scale-105 disabled:opacity-50"
         >
           <Plus className="w-4 h-4" />
         </Button>

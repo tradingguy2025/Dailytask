@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent } from "@/components/ui/card";
 import { Trash2, Edit2, Save, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -41,13 +40,16 @@ export const TodoItem = ({
   };
 
   return (
-    <Card className="finance-card mb-3">
+    <Card className="finance-card mb-3 todo-item-enter">
       <CardContent className="p-4 flex items-center gap-4">
-        <Checkbox
-          checked={completed}
-          onCheckedChange={() => onToggle(id)}
-          className="w-5 h-5"
-        />
+        <div className="checkbox-wrapper">
+          <input
+            type="checkbox"
+            checked={completed}
+            onChange={() => onToggle(id)}
+            className="w-5 h-5"
+          />
+        </div>
         
         {isEditing ? (
           <div className="flex-1 flex gap-3">
@@ -61,10 +63,10 @@ export const TodoItem = ({
                 if (e.key === "Escape") handleCancel();
               }}
             />
-            <Button size="sm" onClick={handleSave} className="finance-button">
+            <Button size="sm" onClick={handleSave} className="finance-button satisfying-click">
               <Save className="w-4 h-4" />
             </Button>
-            <Button size="sm" variant="outline" onClick={handleCancel} className="finance-button">
+            <Button size="sm" variant="outline" onClick={handleCancel} className="finance-button satisfying-click">
               <X className="w-4 h-4" />
             </Button>
           </div>
@@ -76,10 +78,10 @@ export const TodoItem = ({
             )}>
               {text}
             </span>
-            <Button size="sm" variant="ghost" onClick={() => setIsEditing(true)} className="finance-button">
+            <Button size="sm" variant="ghost" onClick={() => setIsEditing(true)} className="finance-button satisfying-click">
               <Edit2 className="w-4 h-4" />
             </Button>
-            <Button size="sm" variant="ghost" onClick={() => onDelete(id)} className="finance-button">
+            <Button size="sm" variant="ghost" onClick={() => onDelete(id)} className="finance-button satisfying-click">
               <Trash2 className="w-4 h-4" />
             </Button>
           </div>

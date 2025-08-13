@@ -6,20 +6,25 @@ import { TodoForm } from "@/components/todo-form";
 import { TodoItem } from "@/components/todo-item";
 import { TodoFilters } from "@/components/todo-filters";
 import { TodoStats } from "@/components/todo-stats";
+import { TimePeriodFilters } from "@/components/time-period-filters";
 
 interface Todo {
   id: string;
   text: string;
   completed: boolean;
+  createdAt: Date;
 }
 
 export default function Home() {
   const [todos, setTodos] = useState<Todo[]>([
-    { id: "1", text: "Learn React", completed: false },
-    { id: "2", text: "Build a todo app", completed: false },
-    { id: "3", text: "Deploy to production", completed: true },
+    { id: "1", text: "Learn React", completed: false, createdAt: new Date() },
+    { id: "2", text: "Build a todo app", completed: false, createdAt: new Date() },
+    { id: "3", text: "Deploy to production", completed: true, createdAt: new Date(Date.now() - 86400000) }, // Yesterday
+    { id: "4", text: "Review code", completed: false, createdAt: new Date(Date.now() - 172800000) }, // 2 days ago
+    { id: "5", text: "Update documentation", completed: true, createdAt: new Date(Date.now() - 604800000) }, // 1 week ago
   ]);
   const [filter, setFilter] = useState<"all" | "active" | "completed">("all");
+  const [timePeriod, setTimePeriod] = useState<"daily" | "weekly" | "monthly">("daily");
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
@@ -46,6 +51,7 @@ export default function Home() {
       id: Date.now().toString(),
       text,
       completed: false,
+      createdAt: new Date(),
     };
     setTodos([...todos, newTodo]);
   };
@@ -68,7 +74,28 @@ export default function Home() {
     );
   };
 
-  const filteredTodos = todos.filter((todo) => {
+  const filterTodosByTimePeriod = (todos: Todo[]) => {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const thisWeek = new Date(today);
+    thisWeek.setDate(today.getDate() - today.getDay());
+    const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+    return todos.filter((todo) => {
+      const todoDate = new Date(todo.createdAt);
+      
+      if (timePeriod === "daily") {
+        return todoDate >= today;
+      } else if (timePeriod === "weekly") {
+        return todoDate >= thisWeek;
+      } else if (timePeriod === "monthly") {
+        return todoDate >= thisMonth;
+      }
+      return true;
+    });
+  };
+
+  const filteredTodos = filterTodosByTimePeriod(todos).filter((todo) => {
     if (filter === "active") return !todo.completed;
     if (filter === "completed") return todo.completed;
     return true;
@@ -77,6 +104,10 @@ export default function Home() {
   const totalTodos = todos.length;
   const completedTodos = todos.filter((todo) => todo.completed).length;
   const activeTodos = totalTodos - completedTodos;
+
+  const periodTodos = filterTodosByTimePeriod(todos);
+  const periodCompletedTodos = periodTodos.filter((todo) => todo.completed).length;
+  const periodActiveTodos = periodTodos.length - periodCompletedTodos;
 
   return (
     <div className="min-h-screen bg-background p-4 sm:p-8 transition-colors duration-300">
@@ -101,9 +132,14 @@ export default function Home() {
           <TodoForm onAdd={addTodo} />
           
           <TodoStats 
-            total={totalTodos} 
-            completed={completedTodos} 
-            active={activeTodos} 
+            total={periodTodos.length} 
+            completed={periodCompletedTodos} 
+            active={periodActiveTodos} 
+          />
+          
+          <TimePeriodFilters 
+            currentPeriod={timePeriod} 
+            onPeriodChange={setTimePeriod} 
           />
           
           <TodoFilters currentFilter={filter} onFilterChange={setFilter} />
@@ -111,7 +147,7 @@ export default function Home() {
           <div className="space-y-2">
             {filteredTodos.length === 0 ? (
               <div className="text-center py-8 text-muted-foreground">
-                No todos found
+                No todos found for this period
               </div>
             ) : (
               filteredTodos.map((todo) => (

@@ -41,8 +41,8 @@ export const TodoItem = ({
   };
 
   return (
-    <Card className="mb-2 subtle-hover">
-      <CardContent className="p-4 flex items-center gap-3">
+    <Card className="finance-card mb-3">
+      <CardContent className="p-4 flex items-center gap-4">
         <Checkbox
           checked={completed}
           onCheckedChange={() => onToggle(id)}
@@ -50,33 +50,36 @@ export const TodoItem = ({
         />
         
         {isEditing ? (
-          <div className="flex-1 flex gap-2">
+          <div className="flex-1 flex gap-3">
             <Input
               value={editText}
               onChange={(e) => setEditText(e.target.value)}
-              className="flex-1"
+              className="glass-input flex-1"
               autoFocus
               onKeyDown={(e) => {
                 if (e.key === "Enter") handleSave();
                 if (e.key === "Escape") handleCancel();
               }}
             />
-            <Button size="sm" onClick={handleSave}>
+            <Button size="sm" onClick={handleSave} className="finance-button">
               <Save className="w-4 h-4" />
             </Button>
-            <Button size="sm" variant="outline" onClick={handleCancel}>
+            <Button size="sm" variant="outline" onClick={handleCancel} className="finance-button">
               <X className="w-4 h-4" />
             </Button>
           </div>
         ) : (
-          <div className="flex-1 flex items-center gap-2">
-            <span className={`flex-1 ${completed ? "line-through text-muted-foreground" : ""}`}>
+          <div className="flex-1 flex items-center gap-3">
+            <span className={cn(
+              "flex-1 transition-all duration-300",
+              completed ? "line-through text-slate-500 dark:text-slate-400" : "text-slate-900 dark:text-slate-100"
+            )}>
               {text}
             </span>
-            <Button size="sm" variant="ghost" onClick={() => setIsEditing(true)}>
+            <Button size="sm" variant="ghost" onClick={() => setIsEditing(true)} className="finance-button">
               <Edit2 className="w-4 h-4" />
             </Button>
-            <Button size="sm" variant="ghost" onClick={() => onDelete(id)}>
+            <Button size="sm" variant="ghost" onClick={() => onDelete(id)} className="finance-button">
               <Trash2 className="w-4 h-4" />
             </Button>
           </div>

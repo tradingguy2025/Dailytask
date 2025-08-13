@@ -22,13 +22,13 @@ export const TodoForm = ({ onAdd }: TodoFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} className="mb-6">
-      <div className="flex gap-2">
+      <div className="flex gap-3">
         <Input
           type="text"
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="Add a new todo..."
-          className="flex-1 transition-all duration-200 focus:ring-2 focus:ring-primary"
+          placeholder="Add a new task..."
+          className="glass-input flex-1 transition-all duration-300"
           onKeyDown={(e) => {
             if (e.key === "Enter") handleSubmit(e);
           }}
@@ -37,7 +37,7 @@ export const TodoForm = ({ onAdd }: TodoFormProps) => {
           type="submit" 
           size="sm" 
           disabled={!text.trim()}
-          className="transition-all duration-200 hover:scale-105 disabled:opacity-50"
+          className="finance-button transition-all duration-300 hover:scale-105 disabled:opacity-50"
         >
           <Plus className="w-4 h-4" />
         </Button>

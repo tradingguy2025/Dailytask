@@ -16,7 +16,7 @@ export const TimePeriodFilters = ({ currentPeriod, onPeriodChange }: TimePeriodF
   ] as const;
 
   return (
-    <div className="flex gap-2 mb-4">
+    <div className="flex gap-2 mb-6">
       {periods.map((period) => (
         <Button
           key={period.key}
@@ -24,10 +24,8 @@ export const TimePeriodFilters = ({ currentPeriod, onPeriodChange }: TimePeriodF
           size="sm"
           onClick={() => onPeriodChange(period.key)}
           className={cn(
-            "text-sm transition-all duration-200 hover:scale-105",
-            currentPeriod === period.key 
-              ? "bg-primary text-primary-foreground" 
-              : "hover:bg-accent"
+            "finance-button text-sm transition-all duration-300 hover:scale-105",
+            currentPeriod === period.key && "active"
           )}
         >
           {period.label}

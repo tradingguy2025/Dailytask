@@ -19,9 +19,9 @@ export default function Home() {
   const [todos, setTodos] = useState<Todo[]>([
     { id: "1", text: "Learn React", completed: false, createdAt: new Date() },
     { id: "2", text: "Build a todo app", completed: false, createdAt: new Date() },
-    { id: "3", text: "Deploy to production", completed: true, createdAt: new Date(Date.now() - 86400000) }, // Yesterday
-    { id: "4", text: "Review code", completed: false, createdAt: new Date(Date.now() - 172800000) }, // 2 days ago
-    { id: "5", text: "Update documentation", completed: true, createdAt: new Date(Date.now() - 604800000) }, // 1 week ago
+    { id: "3", text: "Deploy to production", completed: true, createdAt: new Date(Date.now() - 86400000) },
+    { id: "4", text: "Review code", completed: false, createdAt: new Date(Date.now() - 172800000) },
+    { id: "5", text: "Update documentation", completed: true, createdAt: new Date(Date.now() - 604800000) },
   ]);
   const [filter, setFilter] = useState<"all" | "active" | "completed">("all");
   const [timePeriod, setTimePeriod] = useState<"daily" | "weekly" | "monthly">("daily");
@@ -110,33 +110,80 @@ export default function Home() {
   const periodActiveTodos = periodTodos.length - periodCompletedTodos;
 
   return (
-    <div className="min-h-screen bg-background p-4 sm:p-8 transition-colors duration-300">
-      <div className="max-w-2xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 p-4 sm:p-8 transition-colors duration-300">
+      <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-3xl font-bold mb-2">Todo App</h1>
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+                Task Dashboard
+              </h1>
+              <p className="text-slate-600 dark:text-slate-400 text-lg">
+                Manage your productivity with style
+              </p>
+            </div>
             <button
               onClick={toggleDarkMode}
-              className="p-2 rounded-lg bg-card border hover:bg-accent transition-colors duration-200"
+              className="p-3 rounded-xl glass-input hover:scale-105 transition-all duration-300"
               aria-label="Toggle dark mode"
             >
               {isDark ? "🌙" : "☀️"}
             </button>
           </div>
-          <p className="text-muted-foreground">
-            Organize your tasks efficiently
-          </p>
         </div>
 
-        <div className="bg-card rounded-lg border p-6 subtle-hover">
+        <div className="finance-card rounded-2xl p-8 mb-8">
           <TodoForm onAdd={addTodo} />
-          
-          <TodoStats 
-            total={periodTodos.length} 
-            completed={periodCompletedTodos} 
-            active={periodActiveTodos} 
-          />
-          
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="stat-card rounded-xl p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-slate-600 dark:text-slate-400 text-sm font-medium">Total Tasks</h3>
+              <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                <span className="text-blue-600 dark:text-blue-400 font-bold">📊</span>
+              </div>
+            </div>
+            <div className="text-3xl font-bold text-slate-900 dark:text-slate-100">
+              {periodTodos.length}
+            </div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              {timePeriod.charAt(0).toUpperCase() + timePeriod.slice(1)} overview
+            </div>
+          </div>
+
+          <div className="stat-card rounded-xl p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-slate-600 dark:text-slate-400 text-sm font-medium">Active</h3>
+              <div className="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center">
+                <span className="text-green-600 dark:text-green-400 font-bold">⚡</span>
+              </div>
+            </div>
+            <div className="text-3xl font-bold text-green-600 dark:text-green-400">
+              {periodActiveTodos}
+            </div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              Pending completion
+            </div>
+          </div>
+
+          <div className="stat-card rounded-xl p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-slate-600 dark:text-slate-400 text-sm font-medium">Completed</h3>
+              <div className="w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center">
+                <span className="text-purple-600 dark:text-purple-400 font-bold">✅</span>
+              </div>
+            </div>
+            <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">
+              {periodCompletedTodos}
+            </div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              Successfully finished
+            </div>
+          </div>
+        </div>
+
+        <div className="finance-card rounded-2xl p-6">
           <TimePeriodFilters 
             currentPeriod={timePeriod} 
             onPeriodChange={setTimePeriod} 
@@ -144,10 +191,12 @@ export default function Home() {
           
           <TodoFilters currentFilter={filter} onFilterChange={setFilter} />
           
-          <div className="space-y-2">
+          <div className="space-y-3">
             {filteredTodos.length === 0 ? (
-              <div className="text-center py-8 text-muted-foreground">
-                No todos found for this period
+              <div className="text-center py-12 text-slate-500 dark:text-slate-400">
+                <div className="text-4xl mb-4">📋</div>
+                <div className="text-lg font-medium">No tasks found</div>
+                <div className="text-sm">Add some tasks to get started</div>
               </div>
             ) : (
               filteredTodos.map((todo) => (

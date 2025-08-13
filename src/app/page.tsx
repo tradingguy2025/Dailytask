@@ -6,7 +6,6 @@ import { TodoForm } from "@/components/todo-form";
 import { TodoItem } from "@/components/todo-item";
 import { TodoFilters } from "@/components/todo-filters";
 import { TodoStats } from "@/components/todo-stats";
-import { TimePeriodFilters } from "@/components/time-period-filters";
 
 interface Todo {
   id: string;
@@ -24,7 +23,6 @@ export default function Home() {
     { id: "5", text: "Update documentation", completed: true, createdAt: new Date(Date.now() - 604800000) },
   ]);
   const [filter, setFilter] = useState<"all" | "active" | "completed">("all");
-  const [timePeriod, setTimePeriod] = useState<"daily" | "weekly" | "monthly">("daily");
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
@@ -74,28 +72,7 @@ export default function Home() {
     );
   };
 
-  const filterTodosByTimePeriod = (todos: Todo[]) => {
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const thisWeek = new Date(today);
-    thisWeek.setDate(today.getDate() - today.getDay());
-    const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-
-    return todos.filter((todo) => {
-      const todoDate = new Date(todo.createdAt);
-      
-      if (timePeriod === "daily") {
-        return todoDate >= today;
-      } else if (timePeriod === "weekly") {
-        return todoDate >= thisWeek;
-      } else if (timePeriod === "monthly") {
-        return todoDate >= thisMonth;
-      }
-      return true;
-    });
-  };
-
-  const filteredTodos = filterTodosByTimePeriod(todos).filter((todo) => {
+  const filteredTodos = todos.filter((todo) => {
     if (filter === "active") return !todo.completed;
     if (filter === "completed") return todo.completed;
     return true;
@@ -104,10 +81,6 @@ export default function Home() {
   const totalTodos = todos.length;
   const completedTodos = todos.filter((todo) => todo.completed).length;
   const activeTodos = totalTodos - completedTodos;
-
-  const periodTodos = filterTodosByTimePeriod(todos);
-  const periodCompletedTodos = periodTodos.filter((todo) => todo.completed).length;
-  const periodActiveTodos = periodTodos.length - periodCompletedTodos;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 p-4 sm:p-8 transition-colors duration-300">
@@ -145,10 +118,10 @@ export default function Home() {
               </div>
             </div>
             <div className="text-3xl font-bold text-slate-900 dark:text-slate-100">
-              {periodTodos.length}
+              {totalTodos}
             </div>
             <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-              {timePeriod.charAt(0).toUpperCase() + timePeriod.slice(1)} overview
+              All tasks
             </div>
           </div>
 
@@ -160,7 +133,7 @@ export default function Home() {
               </div>
             </div>
             <div className="text-3xl font-bold text-green-600 dark:text-green-400">
-              {periodActiveTodos}
+              {activeTodos}
             </div>
             <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               Pending completion
@@ -175,7 +148,7 @@ export default function Home() {
               </div>
             </div>
             <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">
-              {periodCompletedTodos}
+              {completedTodos}
             </div>
             <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               Successfully finished
@@ -184,11 +157,6 @@ export default function Home() {
         </div>
 
         <div className="finance-card rounded-2xl p-6">
-          <TimePeriodFilters 
-            currentPeriod={timePeriod} 
-            onPeriodChange={setTimePeriod} 
-          />
-          
           <TodoFilters currentFilter={filter} onFilterChange={setFilter} />
           
           <div className="space-y-3">
